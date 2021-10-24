@@ -5,7 +5,14 @@
   "description": "Advanced options to configure a Neos Client.",
   "additionalProperties": false,
   "properties": {
-    "unsafeModeWhitelist": {
+    "$schema": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "JSONSchema for this file, used for external users to validate and test this file."
+    },
+    "unsafeModeWhiteList": {
       "type": [
         "array",
         "null"
@@ -78,12 +85,12 @@
       "description": "Configuration options for a Neos client's input devices.",
       "additionalProperties": false,
       "properties": {
-        "triggerDeadzone": {
+        "triggerDeadZone": {
           "type": "number",
           "description": "Adds a deadzone to the triggers of all controllers used by this client.",
           "format": "float"
         },
-        "axisDeadzone": {
+        "axisDeadZone": {
           "type": "number",
           "description": "Adds a deadzone to the joysticks of all controllers used by this client.",
           "format": "float"
