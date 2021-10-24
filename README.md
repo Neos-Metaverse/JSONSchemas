@@ -16,7 +16,7 @@ We recommend using VS Code to edit your JSON files, it will then be automatic! S
 
 ## What schemas do you have?
 
-- NeosConfig.schema.json - For headless configuration
+- NeosConfig.schema.json - For [headless configuration](https://wiki.neos.com/Headless_Client/Configuration_File)
 - Config.schema.json - For [Neos client configuration files](https://wiki.neos.com/Startup_Config_File)
 
 ## Where can I learn more?
