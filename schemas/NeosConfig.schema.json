@@ -52,12 +52,18 @@
       "description": "ワールドブラウザで使用する名前とユーザ名を別名にすることができます。\nこの値を設定するとユーザ名とは別にこちらの名前をワールドブラウザに表示できます。"
     },
     "loginCredential": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "default": null,
       "description": "Headlessで使用するユーザのユーザ名を指定します。\nコマンドラインでも --user を使用することで変更可能です。"
     },
     "loginPassword": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "default": null,
       "description": "Headlessで使用するユーザのパスワードを指定します。\nコマンドラインでも --password を使用することで変更可能です。\n二段階認証を使用している場合は追加で --token を使用してトークンを指定してください。"
     },
@@ -142,7 +148,7 @@
             "null",
             "string"
           ],
-          "description": "セッションIDを一意に指定したい場合、この値を指定します。NestedSesisonを行いたい場合などは設定を推奨します。",
+          "description": "セッションIDを一意に指定したい場合、この値を指定します。NestedSessionを行いたい場合などは設定を推奨します。",
           "x-example": "U-ProbablePrime:Cheese-Land"
         },
         "description": {
@@ -242,7 +248,17 @@
           "description": "ワールドに保存されている元の権限を維持するかどうかを設定します。"
         },
         "defaultUserRoles": {
-          "$ref": "#/definitions/Permission",
+          "oneOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ]
+            },
+            {
+              "$ref": "#/definitions/Permission"
+            }
+          ],
           "type": [
             "null",
             "object"
@@ -265,7 +281,7 @@
             "null",
             "string"
           ],
-          "description": "このユーザーがセッションへのアクセスを完全に許可するかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定してCloudVartiable上でTrueとなっている場合、通常のフロー(アクセスレベル,Banなど)を経ずにアクセスが許可されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+          "description": "このユーザーがセッションへのアクセスを完全に許可するかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定してCloudVariable上でTrueとなっている場合、通常のフロー(アクセスレベル,Banなど)を経ずにアクセスが許可されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
         },
         "denyUserCloudVariable": {
           "type": [
