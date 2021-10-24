@@ -5,7 +5,7 @@
   "description": "Advanced options to configure a Neos Client.",
   "additionalProperties": false,
   "properties": {
-    "UnsafeModeWhitelist": {
+    "unsafeModeWhitelist": {
       "type": [
         "array",
         "null"
@@ -15,7 +15,7 @@
         "type": "string"
       }
     },
-    "Inputs": {
+    "inputs": {
       "description": "Configuration options for the controllers of this Neos Client.",
       "oneOf": [
         {
@@ -26,14 +26,14 @@
         }
       ]
     },
-    "UniverseId": {
+    "universeId": {
       "type": [
         "null",
         "string"
       ],
       "description": "Optionally, specifies which universe this Headless Server will be in. See our wiki article on Universes for more info."
     },
-    "AutoStartWorlds": {
+    "autoStartWorlds": {
       "type": [
         "array",
         "null"
@@ -43,7 +43,7 @@
         "$ref": "#/definitions/WorldStartupParameters"
       }
     },
-    "AutoJoinSessions": {
+    "autoJoinSessions": {
       "type": [
         "array",
         "null"
@@ -53,15 +53,15 @@
         "$ref": "#/definitions/SessionJoinParameters"
       }
     },
-    "NoUI": {
+    "noUI": {
       "type": "boolean",
       "description": "When true, will hide most standard UI from the user."
     },
-    "DisableDesktop": {
+    "disableDesktop": {
       "type": "boolean",
       "description": "Disables, the Desktop viewing functionality. Does not disable Desktop Input/Desktop Mode."
     },
-    "PathWhitelist": {
+    "pathWhitelist": {
       "type": [
         "array",
         "null"
@@ -78,12 +78,12 @@
       "description": "Configuration options for a Neos client's input devices.",
       "additionalProperties": false,
       "properties": {
-        "TriggerDeadzone": {
+        "triggerDeadzone": {
           "type": "number",
           "description": "Adds a deadzone to the triggers of all controllers used by this client.",
           "format": "float"
         },
-        "AxisDeadzone": {
+        "axisDeadzone": {
           "type": "number",
           "description": "Adds a deadzone to the joysticks of all controllers used by this client.",
           "format": "float"
