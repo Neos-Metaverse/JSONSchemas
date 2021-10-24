@@ -1,28 +1,32 @@
 # JSONSchemas
 
-Public repository of generated Neos JSON schemas.
+生成されたNeos JSONスキーマの公開リポジトリです。
 
-## What are JSON Schemas?
+## JSONスキーマとは？
 
-JSON Schemas are files which describe the layout and schema of a JSON file. You can use them to Generate Code, Validate JSON etc.
+JSONスキーマは、JSONファイルのレイアウトやスキーマを記述したファイルです。コードの生成やJSONの検証などに利用できます。
 
-## Why are these here?
+## なぜこれがここにあるのか？
 
-When creating headless configuration files, or Neos Client generator files you might be unsure what you can do. These files are designed to fix this :)
+ヘッドレスの設定ファイルやNeosクライアントのジェネレータファイルを作成する際に、何ができるのかわからないことがあります。これらのファイルはこの問題を解決するために設計されています :)
 
-## How can I use these?
+## どうやって使うの？
 
-We recommend using VS Code to edit your JSON files, it will then be automatic! See [VSCode's guide](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings) for more information. There are other tools you can use but we've had mixed success with these. The JSON Schema website has a [list of tooling](https://json-schema.org/implementations.html).
+VS Codeを使ってJSONファイルを編集することをお勧めします、そうすれば自動的に編集されます。 詳しくは[VSCodeで公開されている説明](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings)をご覧ください。日本語向けの説明は[こちら](https://qiita.com/uzuna/items/3f8ae7775b2136fffc7f)。他にも使用できるツールはありますが、私たちはこれらで様々な成功を収めています。JSON Schemaのウェブサイトには[ツールの一覧](https://json-schema.org/implementations.html)があります。
 
-## What schemas do you have?
+## どのようなスキーマがあるのでしょうか？
 
-- NeosConfig.schema.json - For [headless configuration](https://wiki.neos.com/Headless_Client/Configuration_File)
-- Config.schema.json - For [Neos client configuration files](https://wiki.neos.com/Startup_Config_File)
+- NeosConfig.schema.json -　[Headlessの設定向けのものです](https://wiki.neos.com/Headless_Client/Configuration_File/ja)。 英語版は[こちら](https://wiki.neos.com/Headless_Client/Configuration_File)
+- Config.schema.json - [Neosクライアントの設定向けのものです](https://wiki.neos.com/Startup_Config_File/ja)。英語版は[こちら](https://wiki.neos.com/Startup_Config_File)
 
-## Where can I learn more?
+## どこで記法など、詳細を知ることができますか？
 
-Head to the official [JSON Schema website](https://json-schema.org/)!
+公式[JSON Schemaウェブサイト](https://json-schema.org/)に向かうことで詳細を確認できます!
 
-## Why are you using draft-04 schemas?
+## なぜDraft-04スキーマを使っているのですか？
 
-Our [JSON Schema generator](https://github.com/RicoSuter/NJsonSchema) only supports [draft-04](https://github.com/RicoSuter/NJsonSchema/issues/574) right now. Please help it reach 06/07 support :)
+私たちの[JSON Schema generator](https://github.com/RicoSuter/NJsonSchema)は、現在[draft-04](https://github.com/RicoSuter/NJsonSchema/issues/574)しかサポートしていません。06/07のサポートに向けてご協力をお願いします :)
+
+## なぜ日本語版を公開しているの？
+
+日本語で確認したいじゃん(･ω･
