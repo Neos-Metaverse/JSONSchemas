@@ -1,0 +1,10 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "*.json"
+      ],
+      "url": "https://gitlab.com/neosjp/neosjsonschemas-jp/-/raw/main/schemas/NeosConfig.schema.json"
+    }
+  ]
+}
