@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Config",
   "type": "object",
-  "description": "Advanced options to configure a Neos Client.",
+  "description": "Neos クライアントの高度な設定です.",
   "additionalProperties": false,
   "properties": {
     "$schema": {

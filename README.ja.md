@@ -14,6 +14,8 @@ JSONスキーマは、JSONファイルのレイアウトやスキーマを記述
 
 VS Codeを使ってJSONファイルを編集することをお勧めします、そうすれば自動的に編集されます。 詳しくは[VSCodeで公開されている説明](https://code.visualstudio.com/Docs/languages/json#_json-schemas-and-settings)をご覧ください。日本語向けの説明は[こちら](https://qiita.com/uzuna/items/3f8ae7775b2136fffc7f)。他にも使用できるツールはありますが、私たちはこれらで様々な成功を収めています。JSON Schemaのウェブサイトには[ツールの一覧](https://json-schema.org/implementations.html)があります。
 
+ひとまずサンプルを sample 以下に保存しました。簡易的に使用するのであればそれらを.vscodeフォルダ(なければ作成)内にコピーしていただければ使用できます。
+
 ## どのようなスキーマがあるのでしょうか？
 
 - NeosConfig.schema.json -　[Headlessの設定向けのものです](https://wiki.neos.com/Headless_Client/Configuration_File/ja)。 英語版は[こちら](https://wiki.neos.com/Headless_Client/Configuration_File)
