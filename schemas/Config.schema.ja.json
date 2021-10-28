@@ -17,13 +17,14 @@
         "array",
         "null"
       ],
-      "description": "A list of World URLs which can be opened in Unsafe mode with the \"OpenUnsafe\" command line argument",
+      "default": [],
+      "description": "OpenUnsafeコマンドライン引数で指定できる、Unsafeモードで開くことができるWorld URLのリストを指定します。",
       "items": {
         "type": "string"
       }
     },
     "inputs": {
-      "description": "Configuration options for the controllers of this Neos Client.",
+      "description": "Neosクライアントのコントローラを指定します。",
       "oneOf": [
         {
           "type": "null"
@@ -38,14 +39,16 @@
         "null",
         "string"
       ],
-      "description": "Optionally, specifies which universe this Headless Server will be in. See our wiki article on Universes for more info."
+      "default": null,
+      "description": "Neosクライアントがどの宇宙にあるかを指定します。\nこれを指定すると、クライアントやHeadlessで同値のUniverseIdを指定した場合に限り、このクライアントやHeadlessで起動したセッションを確認できるようになります。\n講習などで使用する場合に活用します\nこの設定はNeosのユーザ機能を活用するアクセスレベル(フレンドやフレンド+)をセッションに指定した場合は機能しません。"
     },
     "autoStartWorlds": {
       "type": [
         "array",
         "null"
       ],
-      "description": "A list of worlds/sessions to start/create when this Neos Client Starts.",
+      "default": [],
+      "description": "Neosクライアント起動した際に自動的に開始するセッション・ワールドを指定します。",
       "items": {
         "$ref": "#/definitions/WorldStartupParameters"
       }
@@ -55,25 +58,29 @@
         "array",
         "null"
       ],
-      "description": "A list of rules/ids/urls to use to automatically join sessions when this client starts.",
+      "default": [],
+      "description": "Neosクライアントを起動した際に自動的に参加するセッションを指定します。",
       "items": {
         "$ref": "#/definitions/SessionJoinParameters"
       }
     },
     "noUI": {
       "type": "boolean",
-      "description": "When true, will hide most standard UI from the user."
+      "default": false,
+      "description": "trueに設定すると、ほとんどの標準的なUIをユーザーから隠します。"
     },
     "disableDesktop": {
       "type": "boolean",
-      "description": "Disables, the Desktop viewing functionality. Does not disable Desktop Input/Desktop Mode."
+      "default": false,
+      "description": "trueに設定すると、デスクトップ表示機能を無効にします。デスクトップ入力／デスクトップモードは無効になりません。"
     },
     "pathWhitelist": {
       "type": [
         "array",
         "null"
       ],
-      "description": "A list of paths which Neos can browse in the FileBrowser. Set to an empty array to disable the FileBrowser.",
+      "default": null,
+      "description": "NeosがFileBrowserでブラウズできるパスのリストです。空の配列を設定すると、FileBrowserを無効にします。",
       "items": {
         "type": "string"
       }
@@ -82,17 +89,18 @@
   "definitions": {
     "InputConfig": {
       "type": "object",
-      "description": "Configuration options for a Neos client's input devices.",
+      "description": "Neosクライアントの入力デバイスの設定オプション.",
       "additionalProperties": false,
       "properties": {
         "triggerDeadZone": {
           "type": "number",
-          "description": "Adds a deadzone to the triggers of all controllers used by this client.",
+          "default": 0.0,
+          "description": "クライアントが使用しているすべてのコントローラのトリガーにデッドゾーン(遊び)を指定します",
           "format": "float"
         },
         "axisDeadZone": {
           "type": "number",
-          "description": "Adds a deadzone to the joysticks of all controllers used by this client.",
+          "description": "クライアントが使用しているすべてのコントローラのジョイスティックにデッドゾーン(遊び)を指定します",
           "format": "float"
         }
       }
@@ -107,14 +115,15 @@
             "null",
             "string"
           ],
-          "description": "The name of the session as shown in the World/Session Browser"
+          "default": null,
+          "description": "World/Session Browserに表示されるセッションの名前を指定します。指定しない場合はワールドとして保存された名前をそのまま使用します。"
         },
         "customSessionId": {
           "type": [
             "null",
             "string"
           ],
-          "description": "An optional custom session id for this session.",
+          "description": "セッションIDを一意に指定したい場合、この値を指定します。NestedSessionを行いたい場合などは設定を推奨します。",
           "x-example": "U-ProbablePrime:Cheese-Land"
         },
         "description": {
@@ -122,16 +131,17 @@
             "null",
             "string"
           ],
-          "description": "An optional description of this session, displayed within the world/session browser."
+          "default": null,
+          "description": "ワールド/セッションブラウザに表示されるセッションの説明を指定できます。"
         },
         "maxUsers": {
           "type": "integer",
-          "description": "The maximum number of users, allowed to join this session.",
+          "description": "セッションに参加できるユーザーの最大数です。",
           "format": "int32",
           "default": 32
         },
         "accessLevel": {
-          "description": "The Access Level for this session please see SessionAccessLevel for more information.",
+          "description": "セッションのアクセスレベルを指定します。詳しくはSessionAccessLevelをご覧ください。",
           "oneOf": [
             {
               "$ref": "#/definitions/SessionAccessLevel"
@@ -143,14 +153,16 @@
             "boolean",
             "null"
           ],
-          "description": "Determines if this session should be hidden from the world/session browser or not."
+          "default": null,
+          "description": "セッションを世界/セッションブラウザから隠すかどうかを指定します。\n正確には、NeosCloudに対して送信を行うかをこの引数で設定しており、これを有効にするとNeosCloudに対してのPUTを試用した更新を停止します。"
         },
         "tags": {
           "type": [
             "array",
             "null"
           ],
-          "description": "A list of tags, to assist with searching or discovering sessions. ",
+          "default": null,
+          "description": "セッションの検索や発見に役立つタグをリストで指定します。",
           "x-example": "cheese,world,game",
           "items": {
             "type": "string"
@@ -158,24 +170,36 @@
         },
         "mobileFriendly": {
           "type": "boolean",
-          "description": "Determines if this session is friendly for mobile/quest users."
+          "description": "セッションがモバイルにとって使いやすいかどうかを設定します。\nあくまでも引数で指定するのみなのでこれを指定しても特にセッションに対して制限がかかるものではありません"
         },
         "loadWorldURL": {
           "type": [
             "null",
             "string"
           ],
-          "description": "When provided with a world URL this will load this world for the session."
+          "description": "ワールドのURLが指定されると、そのワールドをセッションとして読み込みます。"
         },
         "loadWorldPresetName": {
           "type": [
             "null",
             "string"
           ],
-          "description": "When provided and valid, this will load the specified world preset into the session."
+          "enum": [
+            "SpaceWorld",
+            "Basic Empty",
+            "GridSpace",
+            "Microworld",
+            "Testing Scaling",
+            "ScratchSpace",
+            "ScratchSpace (mobile)",
+            "Instancing Test",
+            "Physical Locomotion Test",
+            "UIX Test"
+          ],
+          "description": "指定されたワールドプリセットをセッションにロードします。"
         },
         "overrideCorrespondingWorldId": {
-          "description": "Overrides the world id for this session allowing it to be grouped and displayed with other sessions with this world id.",
+          "description": "このセッションのワールドIDを上書きして、このワールドIDを持つ他のセッションとグループ化して表示できるようにします。",
           "oneOf": [
             {
               "type": "null"
@@ -190,18 +214,31 @@
             "integer",
             "null"
           ],
-          "description": "Optional, If specified it will force this session to run on a specific network port."
+          "default": null,
+          "description": "指定すると、このセッションが特定のネットワークポートで実行されるようになります。"
         },
         "keepOriginalRoles": {
           "type": "boolean",
-          "description": "Optional, If specified will keep the original roles as saved in the world."
+          "default": false,
+          "description": "ワールドに保存されている元の権限を維持するかどうかを設定します。"
         },
         "defaultUserRoles": {
+          "oneOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ]
+            },
+            {
+              "$ref": "#/definitions/Permission"
+            }
+          ],
           "type": [
             "null",
             "object"
           ],
-          "description": "When provided with a list of username and permission pairs it will grant those users the listed permissions when they join.",
+          "description": "ユーザー名とパーミッションのペアのリストが提供されると、それらのユーザーが参加したときにリストのパーミッションを付与します。",
           "x-example": "...\n\"defaultUserRoles\":[\n    {\n        \"User\": \"Admin\"\n    }\n]\n...\n\n            ",
           "additionalProperties": {
             "type": "string"
@@ -212,53 +249,55 @@
             "null",
             "string"
           ],
-          "description": "An optional name of a cloud variable to use to determine the role of this user. \nSee our wiki article for more information."
+          "description": "このユーザーの役割を決定するために使用するクラウド変数の名前を指定します。\nCloudVariableではStringで持つ必要があります。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
         },
         "allowUserCloudVariable": {
           "type": [
             "null",
             "string"
           ],
-          "description": "An optional name of a cloud variable to use to determine if this user is allowed in the session. \nSee our wiki article for more information."
+          "description": "このユーザーがセッションへのアクセスを完全に許可するかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定してCloudVariable上でTrueとなっている場合、通常のフロー(アクセスレベル,Banなど)を経ずにアクセスが許可されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
         },
         "denyUserCloudVariable": {
           "type": [
             "null",
             "string"
           ],
-          "description": "An optional name of a cloud variable to use to determine if this user is denied access to the session. \nSee our wiki article for more information."
+          "description": "このユーザーがセッションへのアクセスを拒否されるかどうかを判断するために使用するクラウド変数の名前（オプション）です。\nこの値を指定してCloudVariable上でtrueとなっている場合、一意にアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
         },
         "requiredUserJoinCloudVariable": {
           "type": [
             "null",
             "string"
           ],
-          "description": "An optional name of a cloud variable to use to determine if this user is denied access to the session. \nSee our wiki article for more information."
+          "description": "このユーザーがセッションへのアクセスを許可されるかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定しても、あくまでも許可されただけで通常のフロー(アクセスレベル,Banなど)を経て拒否される場合はアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
         },
         "requiredUserJoinCloudVariableDenyMessage": {
           "type": [
             "null",
             "string"
           ],
-          "description": "The name of a cloud variable whose value will be used, When a user is denied access by RequiredUserJoinCloudVariable this message will be displayed to them if present.\nSee our wiki article for more information."
+          "default": null,
+          "description": "RequiredUserJoinCloudVariableによってユーザーがアクセスを拒否された場合、ユーザーに表示されるメッセージを指定します。\nSee our wiki article for more information."
         },
         "awayKickMinutes": {
           "type": "number",
-          "description": "Configures the number of minutes that a user can be away(shelled out) from a world before they are kicked. Setting this to -1 disables this option.",
+          "default": -1.0,
+          "description": "この値を指定すると、ユーザーがセッションから離れている時間が設定した時間以上になるとKickされるようになります。-1を設定すると、このオプションは無効になります。",
           "format": "double"
         }
       }
     },
     "SessionAccessLevel": {
       "type": "string",
-      "description": "",
+      "description": "セッションのアクセスレベルです",
       "x-enumNames": [
-        "Private",
+        "プライベート",
         "LAN",
-        "Friends",
-        "FriendsOfFriends",
-        "RegisteredUsers",
-        "Anyone"
+        "フレンド",
+        "フレンド+",
+        "Neosに登録されているユーザ",
+        "誰でも"
       ],
       "enum": [
         "Private",
@@ -269,8 +308,27 @@
         "Anyone"
       ]
     },
+    "Permission": {
+      "type": "string",
+      "description": "権限設定の一覧です",
+      "x-enumNames": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ],
+      "enum": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ]
+    },
     "RecordId": {
       "type": "object",
+      "description": "<R-xxx>で指定されるワールドの一意に定まったIdのことです。",
       "additionalProperties": false,
       "properties": {
         "recordId": {
@@ -289,7 +347,7 @@
     },
     "SessionJoinParameters": {
       "type": "object",
-      "description": "Configuration for a session which should be automatically joined by this client.",
+      "description": "このクライアントが自動的に参加するセッションの設定。",
       "additionalProperties": false,
       "properties": {
         "url": {
@@ -297,7 +355,7 @@
             "null",
             "string"
           ],
-          "description": "A direct session URL to join. When specified all other checks will be ignored.",
+          "description": "参加するためのセッションのURiです。指定された場合、他のすべての項目は無視されます。",
           "format": "uri",
           "x-example": {
             "url": "neos-session:///S-U-ProbablePrime:CheeseLand"
@@ -308,29 +366,29 @@
             "null",
             "string"
           ],
-          "description": "A session ID to join, use \"*\" to use the other rules to find a session to join.",
+          "description": "参加したいセッションIDを指定します。 \"*\" (ワイルドカード)を指定するとこの他のﾊﾟﾗﾒｰﾀから入るセッションを自動検索します。",
           "x-example": {
             "sessionId": "S-U-ProbablePrime:CheeseLand"
           }
         },
         "lanOnly": {
           "type": "boolean",
-          "description": "When set to true, will only join LAN sessions."
+          "description": "trueを指定すると、LAN内で開かれたセッションのみに参加します。"
         },
         "headlessOnly": {
           "type": "boolean",
-          "description": "When set to true, will only join Headless sessions."
+          "description": "trueを指定すると、Headlessクライアントで開かれたセッションのみに参加します"
         },
         "onlyUniverseId": {
           "type": [
             "null",
             "string"
           ],
-          "description": "When set, will only join sessions within this Universe."
+          "description": "任意の値を指定すると、同じUniverseIdが設定されたセッションに参加します"
         },
         "autoFocus": {
           "type": "boolean",
-          "description": "When set to true, it will automatically focus this session if it is found."
+          "description": "trueを指定すると、セッションに参加する際に自動的にセッションにフォーカス(移動)します。"
         }
       }
     }
