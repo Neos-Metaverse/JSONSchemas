@@ -1,0 +1,338 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Config",
+  "type": "object",
+  "description": "Advanced options to configure a Neos Client.",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "JSONSchema for this file, used for external users to validate and test this file."
+    },
+    "unsafeModeWhiteList": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of World URLs which can be opened in Unsafe mode with the \"OpenUnsafe\" command line argument",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "description": "Configuration options for the controllers of this Neos Client.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/InputConfig"
+        }
+      ]
+    },
+    "universeId": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Optionally, specifies which universe this Headless Server will be in. See our wiki article on Universes for more info."
+    },
+    "autoStartWorlds": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of worlds/sessions to start/create when this Neos Client Starts.",
+      "items": {
+        "$ref": "#/definitions/WorldStartupParameters"
+      }
+    },
+    "autoJoinSessions": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of rules/ids/urls to use to automatically join sessions when this client starts.",
+      "items": {
+        "$ref": "#/definitions/SessionJoinParameters"
+      }
+    },
+    "noUI": {
+      "type": "boolean",
+      "description": "When true, will hide most standard UI from the user."
+    },
+    "disableDesktop": {
+      "type": "boolean",
+      "description": "Disables, the Desktop viewing functionality. Does not disable Desktop Input/Desktop Mode."
+    },
+    "pathWhitelist": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "A list of paths which Neos can browse in the FileBrowser. Set to an empty array to disable the FileBrowser.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "InputConfig": {
+      "type": "object",
+      "description": "Configuration options for a Neos client's input devices.",
+      "additionalProperties": false,
+      "properties": {
+        "triggerDeadZone": {
+          "type": "number",
+          "description": "Adds a deadzone to the triggers of all controllers used by this client.",
+          "format": "float"
+        },
+        "axisDeadZone": {
+          "type": "number",
+          "description": "Adds a deadzone to the joysticks of all controllers used by this client.",
+          "format": "float"
+        }
+      }
+    },
+    "WorldStartupParameters": {
+      "type": "object",
+      "description": "These options are used to configure a startup word from a JSON configuration file.",
+      "additionalProperties": false,
+      "properties": {
+        "sessionName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "The name of the session as shown in the World/Session Browser"
+        },
+        "customSessionId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional custom session id for this session.",
+          "x-example": "U-ProbablePrime:Cheese-Land"
+        },
+        "description": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional description of this session, displayed within the world/session browser."
+        },
+        "maxUsers": {
+          "type": "integer",
+          "description": "The maximum number of users, allowed to join this session.",
+          "format": "int32",
+          "default": 32
+        },
+        "accessLevel": {
+          "description": "The Access Level for this session please see SessionAccessLevel for more information.",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/SessionAccessLevel"
+            }
+          ]
+        },
+        "hideFromPublicListing": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Determines if this session should be hidden from the world/session browser or not."
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "A list of tags, to assist with searching or discovering sessions. ",
+          "x-example": "cheese,world,game",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mobileFriendly": {
+          "type": "boolean",
+          "description": "Determines if this session is friendly for mobile/quest users."
+        },
+        "loadWorldURL": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "When provided with a world URL this will load this world for the session."
+        },
+        "loadWorldPresetName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "When provided and valid, this will load the specified world preset into the session."
+        },
+        "overrideCorrespondingWorldId": {
+          "description": "Overrides the world id for this session allowing it to be grouped and displayed with other sessions with this world id.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/RecordId"
+            }
+          ]
+        },
+        "forcePort": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Optional, If specified it will force this session to run on a specific network port."
+        },
+        "keepOriginalRoles": {
+          "type": "boolean",
+          "description": "Optional, If specified will keep the original roles as saved in the world."
+        },
+        "defaultUserRoles": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "description": "When provided with a list of username and permission pairs it will grant those users the listed permissions when they join.",
+          "x-example": "...\n\"defaultUserRoles\":[\n    {\n        \"User\": \"Admin\"\n    }\n]\n...\n\n            ",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "roleCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional name of a cloud variable to use to determine the role of this user. \nSee our wiki article for more information."
+        },
+        "allowUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional name of a cloud variable to use to determine if this user is allowed in the session. \nSee our wiki article for more information."
+        },
+        "denyUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional name of a cloud variable to use to determine if this user is denied access to the session. \nSee our wiki article for more information."
+        },
+        "requiredUserJoinCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An optional name of a cloud variable to use to determine if this user is denied access to the session. \nSee our wiki article for more information."
+        },
+        "requiredUserJoinCloudVariableDenyMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "The name of a cloud variable whose value will be used, When a user is denied access by RequiredUserJoinCloudVariable this message will be displayed to them if present.\nSee our wiki article for more information."
+        },
+        "awayKickMinutes": {
+          "type": "number",
+          "description": "Configures the number of minutes that a user can be away(shelled out) from a world before they are kicked. Setting this to -1 disables this option.",
+          "format": "double"
+        }
+      }
+    },
+    "SessionAccessLevel": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Private",
+        "LAN",
+        "Friends",
+        "FriendsOfFriends",
+        "RegisteredUsers",
+        "Anyone"
+      ],
+      "enum": [
+        "Private",
+        "LAN",
+        "Friends",
+        "FriendsOfFriends",
+        "RegisteredUsers",
+        "Anyone"
+      ]
+    },
+    "RecordId": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recordId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "ownerId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "SessionJoinParameters": {
+      "type": "object",
+      "description": "Configuration for a session which should be automatically joined by this client.",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "A direct session URL to join. When specified all other checks will be ignored.",
+          "format": "uri",
+          "x-example": {
+            "url": "neos-session:///S-U-ProbablePrime:CheeseLand"
+          }
+        },
+        "sessionId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "A session ID to join, use \"*\" to use the other rules to find a session to join.",
+          "x-example": {
+            "sessionId": "S-U-ProbablePrime:CheeseLand"
+          }
+        },
+        "lanOnly": {
+          "type": "boolean",
+          "description": "When set to true, will only join LAN sessions."
+        },
+        "headlessOnly": {
+          "type": "boolean",
+          "description": "When set to true, will only join Headless sessions."
+        },
+        "onlyUniverseId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "When set, will only join sessions within this Universe."
+        },
+        "autoFocus": {
+          "type": "boolean",
+          "description": "When set to true, it will automatically focus this session if it is found."
+        }
+      }
+    }
+  }
+}
