@@ -107,7 +107,7 @@
     },
     "WorldStartupParameters": {
       "type": "object",
-      "description": "These options are used to configure a startup word from a JSON configuration file.",
+      "description": "これらのオプションは、JSON構成ファイルを元として起動時にセッションを起動する設定を適用するために使用します。",
       "additionalProperties": false,
       "properties": {
         "sessionName": {
