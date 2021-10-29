@@ -246,6 +246,53 @@
           "type": "number",
           "description": "Configures the number of minutes that a user can be away(shelled out) from a world before they are kicked. Setting this to -1 disables this option.",
           "format": "double"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "description": "When set to true, this will disable this world entry from starting."
+        },
+        "saveAsOwner": {
+          "description": "Controls who saves this world when it is saved. See, SaveAsOwner for more information.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SaveAsOwner"
+            }
+          ]
+        },
+        "autoInviteUsernames": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Users within this list will automatically be invited to this world when it starts.",
+          "x-example": "...\n\"autoInviteUsernames\": [\n]\n...",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentSessionIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Provides a list of Parent Session Ids for this session. See our wiki for more info.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An automatic message sent to the users on the AutoInviteUsernames list along with their invite."
+        },
+        "saveOnExit": {
+          "type": "boolean",
+          "description": "If set to true will save this world on exit."
         }
       }
     },
