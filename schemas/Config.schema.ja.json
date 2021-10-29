@@ -285,6 +285,58 @@
           "default": -1.0,
           "description": "この値を指定すると、ユーザーがセッションから離れている時間が設定した時間以上になるとKickされるようになります。-1を設定すると、このオプションは無効になります。",
           "format": "double"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "falseに設定するとこのワールドエントリーが開始されないようになります。"
+        },
+        "saveAsOwner": {
+          "description": "このワールドが保存されたときに、誰が保存するかを制御します。詳しくは、SaveAsOwnerを参照してください。",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SaveAsOwner"
+            }
+          ]
+        },
+        "autoInviteUsernames": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このリスト内のユーザーは、開始時に自動的にこのワールドに招待されます。",
+          "x-example": "...\n\"autoInviteUsernames\": [\n]\n...",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentSessionIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このセッションのペアレントセッションを指定します。\n事前にペアレントとなるセッションとフレンドになる必要があります。\nまた、Neos側の問題により現在一部の挙動(人数の表示/セッションの非表示化)に問題が発生しています。",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "AutoInviteUsernamesリストに登録されているユーザーに、招待状と一緒に送られる自動メッセージを指定します。"
+        },
+        "saveOnExit": {
+          "type": "boolean",
+          "default": false,
+          "description": "終了時にこの世界を保存します。"
         }
       }
     },
