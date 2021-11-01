@@ -1,0 +1,464 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "NeosConfig",
+  "type": "object",
+  "description": "Neos Headlessサーバーの設定に使用されるオプションです。Headless起動時にJSONファイルから読み込みます。",
+  "additionalProperties": false,
+  "required": [
+    "startWorlds"
+  ],
+  "properties": {
+    "$schema": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "JSONSchema for this file, used for external users to validate and test this file."
+    },
+    "comment": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "description": "このファイルに対する任意のフリーフォームのコメントです。設定を識別するために使用します。"
+    },
+    "universeId": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "description": "このヘッドレスサーバがどの宇宙にあるかを指定します。\nこれを指定すると、クライアントで同値のUniverseIdを指定した場合に限りこのクライアントで起動したセッションは確認できるようになります。\n講習などで使用する場合に活用します\nこの設定はNeosのユーザ機能を活用するアクセスレベル(フレンドやフレンド+)をセッションに指定した場合は機能しません。"
+    },
+    "tickRate": {
+      "type": "number",
+      "default": 60,
+      "description": "1秒間に何回、ティック（更新）を行うかを設定します。",
+      "format": "float"
+    },
+    "maxConcurrentAssetTransfers": {
+      "type": "integer",
+      "default": 4,
+      "description": "このヘッドレスサーバーの最大同時アセット転送数を指定します。多くするとアセットの詰まりがなくなりますが、ネットワーク負荷も高まります。",
+      "format": "int32"
+    },
+    "usernameOverride": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "description": "ワールドブラウザで使用する名前とユーザ名を別名にすることができます。\nこの値を設定するとユーザ名とは別にこちらの名前をワールドブラウザに表示できます。"
+    },
+    "loginCredential": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "description": "Headlessで使用するユーザのユーザ名を指定します。\nコマンドラインでも --user を使用することで変更可能です。"
+    },
+    "loginPassword": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null,
+      "description": "Headlessで使用するユーザのパスワードを指定します。\nコマンドラインでも --password を使用することで変更可能です。\n二段階認証を使用している場合は追加で --token を使用してトークンを指定してください。"
+    },
+    "startWorlds": {
+      "type": "array",
+      "description": "このHeadless Serverの起動時に開始/作成するワールド/セッションのリストです。",
+      "items": {
+        "$ref": "#/definitions/WorldStartInfo"
+      }
+    },
+    "dataFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのデータを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --data を使用することで変更可能です。"
+    },
+    "cacheFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのキャッシュを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --cache を使用することで変更可能です。"
+    },
+    "logsFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのログを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --logs を使用することで変更可能です"
+    },
+    "allowedUrlHosts": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": null,
+      "description": "Neos内のHTTP/WebSocket操作を自動的に許可するホストのリストを指定します。",
+      "x-example": " ...\n \"allowedUrlHosts\":[\n \"google.com\",\n \"localhost:3000\"\n ]",
+      "items": {
+        "type": "string"
+      }
+    },
+    "autoSpawnItems": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "ワールドの開始時にスポーンするアイテムURIのリストです。",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metamovieRoles": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "description": "MetaMovieイベントを行った際の引数です、通常は使用しません",
+      "x-deprecated": true,
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "WorldStartInfo": {
+      "type": "object",
+      "description": "Headless Server startWorldsの設定に追加オプションを提供します。",
+      "additionalProperties": false,
+      "properties": {
+        "sessionName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "World/Session Browserに表示されるセッションの名前を指定します。指定しない場合はワールドとして保存された名前をそのまま使用します。"
+        },
+        "customSessionId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "セッションIDを一意に指定したい場合、この値を指定します。NestedSessionを行いたい場合などは設定を推奨します。",
+          "x-example": "U-ProbablePrime:Cheese-Land"
+        },
+        "description": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "ワールド/セッションブラウザに表示されるセッションの説明を指定できます。"
+        },
+        "maxUsers": {
+          "type": "integer",
+          "description": "セッションに参加できるユーザーの最大数です。",
+          "format": "int32",
+          "default": 32
+        },
+        "accessLevel": {
+          "description": "セッションのアクセスレベルを指定します。詳しくはSessionAccessLevelをご覧ください。",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/SessionAccessLevel"
+            }
+          ]
+        },
+        "hideFromPublicListing": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
+          "description": "セッションを世界/セッションブラウザから隠すかどうかを指定します。\n正確には、NeosCloudに対して送信を行うかをこの引数で設定しており、これを有効にするとNeosCloudに対してのPUTを試用した更新を停止します。"
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "セッションの検索や発見に役立つタグをリストで指定します。",
+          "x-example": "cheese,world,game",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mobileFriendly": {
+          "type": "boolean",
+          "description": "セッションがモバイルにとって使いやすいかどうかを設定します。\nあくまでも引数で指定するのみなのでこれを指定しても特にセッションに対して制限がかかるものではありません"
+        },
+        "loadWorldURL": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "ワールドのURLが指定されると、そのワールドをセッションとして読み込みます。"
+        },
+        "loadWorldPresetName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "enum": [
+            "SpaceWorld",
+            "Basic Empty",
+            "GridSpace",
+            "Microworld",
+            "Testing Scaling",
+            "ScratchSpace",
+            "ScratchSpace (mobile)",
+            "Instancing Test",
+            "Physical Locomotion Test",
+            "UIX Test"
+          ],
+          "description": "指定されたワールドプリセットをセッションにロードします。"
+        },
+        "overrideCorrespondingWorldId": {
+          "description": "このセッションのワールドIDを上書きして、このワールドIDを持つ他のセッションとグループ化して表示できるようにします。",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/RecordId"
+            }
+          ]
+        },
+        "forcePort": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "指定すると、このセッションが特定のネットワークポートで実行されるようになります。"
+        },
+        "keepOriginalRoles": {
+          "type": "boolean",
+          "default": false,
+          "description": "ワールドに保存されている元の権限を維持するかどうかを設定します。"
+        },
+        "defaultUserRoles": {
+          "oneOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ]
+            },
+            {
+              "$ref": "#/definitions/Permission"
+            }
+          ],
+          "type": [
+            "null",
+            "object"
+          ],
+          "description": "ユーザー名とパーミッションのペアのリストが提供されると、それらのユーザーが参加したときにリストのパーミッションを付与します。",
+          "x-example": "...\n\"defaultUserRoles\":[\n    {\n        \"User\": \"Admin\"\n    }\n]\n...\n\n            ",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "roleCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーの役割を決定するために使用するクラウド変数の名前を指定します。\nCloudVariableではStringで持つ必要があります。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "allowUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを完全に許可するかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定してCloudVariable上でTrueとなっている場合、通常のフロー(アクセスレベル,Banなど)を経ずにアクセスが許可されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "denyUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを拒否されるかどうかを判断するために使用するクラウド変数の名前（オプション）です。\nこの値を指定してCloudVariable上でtrueとなっている場合、一意にアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "requiredUserJoinCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを許可されるかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定しても、あくまでも許可されただけで通常のフロー(アクセスレベル,Banなど)を経て拒否される場合はアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "requiredUserJoinCloudVariableDenyMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "RequiredUserJoinCloudVariableによってユーザーがアクセスを拒否された場合、ユーザーに表示されるメッセージを指定します。\nSee our wiki article for more information."
+        },
+        "awayKickMinutes": {
+          "type": "number",
+          "default": -1.0,
+          "description": "この値を指定すると、ユーザーがセッションから離れている時間が設定した時間以上になるとKickされるようになります。-1を設定すると、このオプションは無効になります。",
+          "format": "double"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "falseに設定するとこのワールドエントリーが開始されないようになります。"
+        },
+        "saveAsOwner": {
+          "description": "このワールドが保存されたときに、誰が保存するかを制御します。詳しくは、SaveAsOwnerを参照してください。",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SaveAsOwner"
+            }
+          ]
+        },
+        "autoInviteUsernames": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このリスト内のユーザーは、開始時に自動的にこのワールドに招待されます。",
+          "x-example": "...\n\"autoInviteUsernames\": [\n]\n...",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentSessionIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このセッションのペアレントセッションを指定します。\n事前にペアレントとなるセッションとフレンドになる必要があります。\nまた、Neos側の問題により現在一部の挙動(人数の表示/セッションの非表示化)に問題が発生しています。",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "AutoInviteUsernamesリストに登録されているユーザーに、招待状と一緒に送られる自動メッセージを指定します。"
+        },
+        "autoRecover": {
+          "type": "boolean"
+        },
+        "idleRestartInterval": {
+          "type": "number",
+          "default": -1.0,
+          "description": "アクティブユーザがいない場合において定期的に再起動を行う[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
+        "forcedRestartInterval": {
+          "type": "number",
+          "default": -1.0,
+          "description": "定期的に再起動を行う[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
+        "saveOnExit": {
+          "type": "boolean",
+          "default": false,
+          "description": "終了時にこの世界を保存します。"
+        },
+        "autosaveInterval": {
+          "type": "number",
+          "default": -1,
+          "description": "自動的に保存される[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
+        "autoSleep": {
+          "type": "boolean",
+          "default": true,
+          "description": "アクティブユーザがいないセッションにおいて、完全なアップデートサイクルを定期的に実行することを防ぎます。"
+        }
+      }
+    },
+    "SessionAccessLevel": {
+      "type": "string",
+      "description": "セッションのアクセスレベルです",
+      "x-enumNames": [
+        "プライベート",
+        "LAN",
+        "フレンド",
+        "フレンド+",
+        "Neosに登録されているユーザ",
+        "誰でも"
+      ],
+      "enum": [
+        "Private",
+        "LAN",
+        "Friends",
+        "FriendsOfFriends",
+        "RegisteredUsers",
+        "Anyone"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "description": "権限設定の一覧です",
+      "x-enumNames": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ],
+      "enum": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ]
+    },
+    "RecordId": {
+      "type": "object",
+      "description": "<R-xxx>で指定されるワールドの一意に定まったIdのことです。",
+      "additionalProperties": false,
+      "properties": {
+        "recordId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "ownerId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "SaveAsOwner": {
+      "type": "string",
+      "description": "どこに保存するかを指定する際の引数です",
+      "x-enumNames": [
+        "ローカルマシン(ローカルdbに保存されます)",
+        "クラウドユーザ(NeosCloudに保存されます)"
+      ],
+      "enum": [
+        "LocalMachine",
+        "CloudUser"
+      ]
+    }
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Config",
+  "type": "object",
+  "description": "Neos クライアントの高度な設定です.",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "JSONSchema for this file, used for external users to validate and test this file."
+    },
+    "unsafeModeWhiteList": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": [],
+      "description": "OpenUnsafeコマンドライン引数で指定できる、Unsafeモードで開くことができるWorld URLのリストを指定します。",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inputs": {
+      "description": "Neosクライアントのコントローラを指定します。",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/definitions/InputConfig"
+        }
+      ]
+    },
+    "universeId": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "description": "Neosクライアントがどの宇宙にあるかを指定します。\nこれを指定すると、クライアントやHeadlessで同値のUniverseIdを指定した場合に限り、このクライアントやHeadlessで起動したセッションを確認できるようになります。\n講習などで使用する場合に活用します\nこの設定はNeosのユーザ機能を活用するアクセスレベル(フレンドやフレンド+)をセッションに指定した場合は機能しません。"
+    },
+    "autoStartWorlds": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": [],
+      "description": "Neosクライアント起動した際に自動的に開始するセッション・ワールドを指定します。",
+      "items": {
+        "$ref": "#/definitions/WorldStartupParameters"
+      }
+    },
+    "autoJoinSessions": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": [],
+      "description": "Neosクライアントを起動した際に自動的に参加するセッションを指定します。",
+      "items": {
+        "$ref": "#/definitions/SessionJoinParameters"
+      }
+    },
+    "noUI": {
+      "type": "boolean",
+      "default": false,
+      "description": "trueに設定すると、ほとんどの標準的なUIをユーザーから隠します。"
+    },
+    "disableDesktop": {
+      "type": "boolean",
+      "default": false,
+      "description": "trueに設定すると、デスクトップ表示機能を無効にします。デスクトップ入力／デスクトップモードは無効になりません。"
+    },
+    "pathWhitelist": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "default": null,
+      "description": "NeosがFileBrowserでブラウズできるパスのリストです。空の配列を設定すると、FileBrowserを無効にします。",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "definitions": {
+    "InputConfig": {
+      "type": "object",
+      "description": "Neosクライアントの入力デバイスの設定オプション.",
+      "additionalProperties": false,
+      "properties": {
+        "triggerDeadZone": {
+          "type": "number",
+          "default": 0.0,
+          "description": "クライアントが使用しているすべてのコントローラのトリガーにデッドゾーン(遊び)を指定します",
+          "format": "float"
+        },
+        "axisDeadZone": {
+          "type": "number",
+          "description": "クライアントが使用しているすべてのコントローラのジョイスティックにデッドゾーン(遊び)を指定します",
+          "format": "float"
+        }
+      }
+    },
+    "WorldStartupParameters": {
+      "type": "object",
+      "description": "これらのオプションは、JSON構成ファイルを元として起動時にセッションを起動する設定を適用するために使用します。",
+      "additionalProperties": false,
+      "properties": {
+        "sessionName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "World/Session Browserに表示されるセッションの名前を指定します。指定しない場合はワールドとして保存された名前をそのまま使用します。"
+        },
+        "customSessionId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "セッションIDを一意に指定したい場合、この値を指定します。NestedSessionを行いたい場合などは設定を推奨します。",
+          "x-example": "U-ProbablePrime:Cheese-Land"
+        },
+        "description": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "ワールド/セッションブラウザに表示されるセッションの説明を指定できます。"
+        },
+        "maxUsers": {
+          "type": "integer",
+          "description": "セッションに参加できるユーザーの最大数です。",
+          "format": "int32",
+          "default": 32
+        },
+        "accessLevel": {
+          "description": "セッションのアクセスレベルを指定します。詳しくはSessionAccessLevelをご覧ください。",
+          "oneOf": [
+            {
+              "$ref": "#/definitions/SessionAccessLevel"
+            }
+          ]
+        },
+        "hideFromPublicListing": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "default": null,
+          "description": "セッションを世界/セッションブラウザから隠すかどうかを指定します。\n正確には、NeosCloudに対して送信を行うかをこの引数で設定しており、これを有効にするとNeosCloudに対してのPUTを試用した更新を停止します。"
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "セッションの検索や発見に役立つタグをリストで指定します。",
+          "x-example": "cheese,world,game",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mobileFriendly": {
+          "type": "boolean",
+          "description": "セッションがモバイルにとって使いやすいかどうかを設定します。\nあくまでも引数で指定するのみなのでこれを指定しても特にセッションに対して制限がかかるものではありません"
+        },
+        "loadWorldURL": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "ワールドのURLが指定されると、そのワールドをセッションとして読み込みます。"
+        },
+        "loadWorldPresetName": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "enum": [
+            "SpaceWorld",
+            "Basic Empty",
+            "GridSpace",
+            "Microworld",
+            "Testing Scaling",
+            "ScratchSpace",
+            "ScratchSpace (mobile)",
+            "Instancing Test",
+            "Physical Locomotion Test",
+            "UIX Test"
+          ],
+          "description": "指定されたワールドプリセットをセッションにロードします。"
+        },
+        "overrideCorrespondingWorldId": {
+          "description": "このセッションのワールドIDを上書きして、このワールドIDを持つ他のセッションとグループ化して表示できるようにします。",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/RecordId"
+            }
+          ]
+        },
+        "forcePort": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "指定すると、このセッションが特定のネットワークポートで実行されるようになります。"
+        },
+        "keepOriginalRoles": {
+          "type": "boolean",
+          "default": false,
+          "description": "ワールドに保存されている元の権限を維持するかどうかを設定します。"
+        },
+        "defaultUserRoles": {
+          "oneOf": [
+            {
+              "type": [
+                "null",
+                "object"
+              ]
+            },
+            {
+              "$ref": "#/definitions/Permission"
+            }
+          ],
+          "type": [
+            "null",
+            "object"
+          ],
+          "description": "ユーザー名とパーミッションのペアのリストが提供されると、それらのユーザーが参加したときにリストのパーミッションを付与します。",
+          "x-example": "...\n\"defaultUserRoles\":[\n    {\n        \"User\": \"Admin\"\n    }\n]\n...\n\n            ",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "roleCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーの役割を決定するために使用するクラウド変数の名前を指定します。\nCloudVariableではStringで持つ必要があります。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "allowUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを完全に許可するかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定してCloudVariable上でTrueとなっている場合、通常のフロー(アクセスレベル,Banなど)を経ずにアクセスが許可されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "denyUserCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを拒否されるかどうかを判断するために使用するクラウド変数の名前（オプション）です。\nこの値を指定してCloudVariable上でtrueとなっている場合、一意にアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "requiredUserJoinCloudVariable": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "このユーザーがセッションへのアクセスを許可されるかどうかを判断するために使用するクラウド変数の名前です。\nこの値を指定しても、あくまでも許可されただけで通常のフロー(アクセスレベル,Banなど)を経て拒否される場合はアクセスが拒否されます。\n値はCloudVariableで持つ必要があり、現在のところグループ所有のCloudVariableでのみ動作が確認されています。"
+        },
+        "requiredUserJoinCloudVariableDenyMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "RequiredUserJoinCloudVariableによってユーザーがアクセスを拒否された場合、ユーザーに表示されるメッセージを指定します。\nSee our wiki article for more information."
+        },
+        "awayKickMinutes": {
+          "type": "number",
+          "default": -1.0,
+          "description": "この値を指定すると、ユーザーがセッションから離れている時間が設定した時間以上になるとKickされるようになります。-1を設定すると、このオプションは無効になります。",
+          "format": "double"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "falseに設定するとこのワールドエントリーが開始されないようになります。"
+        },
+        "saveAsOwner": {
+          "description": "このワールドが保存されたときに、誰が保存するかを制御します。詳しくは、SaveAsOwnerを参照してください。",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SaveAsOwner"
+            }
+          ]
+        },
+        "autoInviteUsernames": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このリスト内のユーザーは、開始時に自動的にこのワールドに招待されます。",
+          "x-example": "...\n\"autoInviteUsernames\": [\n]\n...",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentSessionIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "default": null,
+          "description": "このセッションのペアレントセッションを指定します。\n事前にペアレントとなるセッションとフレンドになる必要があります。\nまた、Neos側の問題により現在一部の挙動(人数の表示/セッションの非表示化)に問題が発生しています。",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "default": null,
+          "description": "AutoInviteUsernamesリストに登録されているユーザーに、招待状と一緒に送られる自動メッセージを指定します。"
+        },
+        "saveOnExit": {
+          "type": "boolean",
+          "default": false,
+          "description": "終了時にこの世界を保存します。"
+        }
+      }
+    },
+    "SessionAccessLevel": {
+      "type": "string",
+      "description": "セッションのアクセスレベルです",
+      "x-enumNames": [
+        "プライベート",
+        "LAN",
+        "フレンド",
+        "フレンド+",
+        "Neosに登録されているユーザ",
+        "誰でも"
+      ],
+      "enum": [
+        "Private",
+        "LAN",
+        "Friends",
+        "FriendsOfFriends",
+        "RegisteredUsers",
+        "Anyone"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "description": "権限設定の一覧です",
+      "x-enumNames": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ],
+      "enum": [
+        "Admin",
+        "Builder",
+        "Moderator",
+        "Guest",
+        "Spectator"
+      ]
+    },
+    "RecordId": {
+      "type": "object",
+      "description": "<R-xxx>で指定されるワールドの一意に定まったIdのことです。",
+      "additionalProperties": false,
+      "properties": {
+        "recordId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "ownerId": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "SessionJoinParameters": {
+      "type": "object",
+      "description": "このクライアントが自動的に参加するセッションの設定。",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "参加するためのセッションのURiです。指定された場合、他のすべての項目は無視されます。",
+          "format": "uri",
+          "x-example": {
+            "url": "neos-session:///S-U-ProbablePrime:CheeseLand"
+          }
+        },
+        "sessionId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "参加したいセッションIDを指定します。 \"*\" (ワイルドカード)を指定するとこの他のﾊﾟﾗﾒｰﾀから入るセッションを自動検索します。",
+          "x-example": {
+            "sessionId": "S-U-ProbablePrime:CheeseLand"
+          }
+        },
+        "lanOnly": {
+          "type": "boolean",
+          "description": "trueを指定すると、LAN内で開かれたセッションのみに参加します。"
+        },
+        "headlessOnly": {
+          "type": "boolean",
+          "description": "trueを指定すると、Headlessクライアントで開かれたセッションのみに参加します"
+        },
+        "onlyUniverseId": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "任意の値を指定すると、同じUniverseIdが設定されたセッションに参加します"
+        },
+        "autoFocus": {
+          "type": "boolean",
+          "description": "trueを指定すると、セッションに参加する際に自動的にセッションにフォーカス(移動)します。"
+        }
+      }
+    }
+  }
+}
