@@ -1,9 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Config",
+  "title": "NeosHeadlessConfig",
   "type": "object",
-  "description": "Advanced options to configure a Neos Client.",
+  "description": "Options used to configure a Neos Headless server. Read in from a JSON file on Headless start.",
   "additionalProperties": false,
+  "required": [
+    "startWorlds"
+  ],
   "properties": {
     "$schema": {
       "type": [
@@ -12,26 +15,12 @@
       ],
       "description": "JSONSchema for this file, used for external users to validate and test this file."
     },
-    "unsafeModeWhiteList": {
+    "comment": {
       "type": [
-        "array",
-        "null"
+        "null",
+        "string"
       ],
-      "description": "A list of World URLs which can be opened in Unsafe mode with the \"OpenUnsafe\" command line argument",
-      "items": {
-        "type": "string"
-      }
-    },
-    "inputs": {
-      "description": "Configuration options for the controllers of this Neos Client.",
-      "oneOf": [
-        {
-          "type": "null"
-        },
-        {
-          "$ref": "#/definitions/InputConfig"
-        }
-      ]
+      "description": "An optional free form comment for this file. Used for identification for your configuration."
     },
     "universeId": {
       "type": [
@@ -40,68 +29,97 @@
       ],
       "description": "Optionally, specifies which universe this Headless Server will be in. See our wiki article on Universes for more info."
     },
-    "autoStartWorlds": {
+    "tickRate": {
+      "type": "number",
+      "description": "Configures how many ticks(updates), should occur per second. Default is 60.",
+      "format": "float"
+    },
+    "maxConcurrentAssetTransfers": {
+      "type": "integer",
+      "description": "Specifies the maximum concurrent asset transfers for this headless server. Default is 4.",
+      "format": "int32"
+    },
+    "usernameOverride": {
       "type": [
-        "array",
-        "null"
+        "null",
+        "string"
       ],
-      "description": "A list of worlds/sessions to start/create when this Neos Client Starts.",
+      "description": "Configures a username which will override LoginCredential, within the world browser etc."
+    },
+    "loginCredential": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Neos username for this Headless Server to use."
+    },
+    "loginPassword": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Neos user password for the Headless Server to use."
+    },
+    "startWorlds": {
+      "type": "array",
+      "description": "A list of worlds/sessions to start/create when this Headless Server starts.",
       "items": {
         "$ref": "#/definitions/WorldStartupParameters"
       }
     },
-    "autoJoinSessions": {
+    "dataFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Optionally, override the folder which Neos will use to store data for this Headless Server."
+    },
+    "cacheFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Optionally, override the folder which Neos will use to store cache for this Headless Server."
+    },
+    "logsFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "Optionally, override the folder which Neos will use to store logs for this Headless Server."
+    },
+    "allowedUrlHosts": {
       "type": [
         "array",
         "null"
       ],
-      "description": "A list of rules/ids/urls to use to automatically join sessions when this client starts.",
+      "description": "A list of hosts which will automatically be allowed for in-Neos HTTP/WebSocket operations",
+      "x-example": " ...\n \"allowedUrlHosts\":[\n \"google.com\",\n \"localhost:3000\"\n ]",
       "items": {
-        "$ref": "#/definitions/SessionJoinParameters"
+        "type": "string"
       }
     },
-    "noUI": {
-      "type": "boolean",
-      "description": "When true, will hide most standard UI from the user."
-    },
-    "disableDesktop": {
-      "type": "boolean",
-      "description": "Disables, the Desktop viewing functionality. Does not disable Desktop Input/Desktop Mode."
-    },
-    "pathWhitelist": {
+    "autoSpawnItems": {
       "type": [
         "array",
         "null"
       ],
-      "description": "A list of paths which Neos can browse in the FileBrowser. Set to an empty array to disable the FileBrowser.",
+      "description": "A list of item URIs to spawn in when a world starts.",
       "items": {
         "type": "string"
       }
     }
   },
   "definitions": {
-    "InputConfig": {
-      "type": "object",
-      "description": "Configuration options for a Neos client's input devices.",
-      "additionalProperties": false,
-      "properties": {
-        "triggerDeadZone": {
-          "type": "number",
-          "description": "Adds a deadzone to the triggers of all controllers used by this client.",
-          "format": "float"
-        },
-        "axisDeadZone": {
-          "type": "number",
-          "description": "Adds a deadzone to the joysticks of all controllers used by this client.",
-          "format": "float"
-        }
-      }
-    },
     "WorldStartupParameters": {
       "type": "object",
       "description": "These options are used to configure a startup word from a JSON configuration file.",
       "additionalProperties": false,
       "properties": {
+        "isEnabled": {
+          "type": "boolean",
+          "description": "When set to false, this will disable this world entry from starting."
+        },
         "sessionName": {
           "type": [
             "null",
@@ -246,12 +264,78 @@
           "type": "number",
           "description": "Configures the number of minutes that a user can be away(shelled out) from a world before they are kicked. Setting this to -1 disables this option.",
           "format": "double"
+        },
+        "parentSessionIds": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Provides a list of Parent Session Ids for this session. See our wiki for more info.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteUsernames": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Users within this list will automatically be invited to this world when it starts.",
+          "x-example": "...\n\"autoInviteUsernames\": [\n]\n...",
+          "items": {
+            "type": "string"
+          }
+        },
+        "autoInviteMessage": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "An automatic message sent to the users on the AutoInviteUsernames list along with their invite."
+        },
+        "saveAsOwner": {
+          "description": "Controls who saves this world when it is saved. See, SaveAsOwner for more information.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/SaveAsOwner"
+            }
+          ]
+        },
+        "autoRecover": {
+          "type": "boolean",
+          "description": "Headless only"
+        },
+        "idleRestartInterval": {
+          "type": "number",
+          "description": "If this is set(&gt;0) and the world is empty, it will restart regularly using the value to determine the number of seconds between restarts.\nHeadless only",
+          "format": "double"
+        },
+        "forcedRestartInterval": {
+          "type": "number",
+          "description": "If this is set(&gt;0), it will restart regularly using the value to determine the number of seconds between restarts.\nHeadless only",
+          "format": "double"
+        },
+        "saveOnExit": {
+          "type": "boolean",
+          "description": "If set to true will save this world on exit."
+        },
+        "autosaveInterval": {
+          "type": "number",
+          "description": "If this is set(&gt;0), it will automatically save using the value to determine the number of seconds between saves.\nHeadless only",
+          "format": "double"
+        },
+        "autoSleep": {
+          "type": "boolean",
+          "description": "If set to true, will prevent an empty(or filled with away users) world from running a full update cycle regularily.\nHeadless only"
         }
       }
     },
     "SessionAccessLevel": {
       "type": "string",
-      "description": "",
+      "description": "Used to determine the session access level for a session.",
       "x-enumNames": [
         "Private",
         "LAN",
@@ -287,52 +371,17 @@
         }
       }
     },
-    "SessionJoinParameters": {
-      "type": "object",
-      "description": "Configuration for a session which should be automatically joined by this client.",
-      "additionalProperties": false,
-      "properties": {
-        "url": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "A direct session URL to join. When specified all other checks will be ignored.",
-          "format": "uri",
-          "x-example": {
-            "url": "neos-session:///S-U-ProbablePrime:CheeseLand"
-          }
-        },
-        "sessionId": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "A session ID to join, use \"*\" to use the other rules to find a session to join.",
-          "x-example": {
-            "sessionId": "S-U-ProbablePrime:CheeseLand"
-          }
-        },
-        "lanOnly": {
-          "type": "boolean",
-          "description": "When set to true, will only join LAN sessions."
-        },
-        "headlessOnly": {
-          "type": "boolean",
-          "description": "When set to true, will only join Headless sessions."
-        },
-        "onlyUniverseId": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "When set, will only join sessions within this Universe."
-        },
-        "autoFocus": {
-          "type": "boolean",
-          "description": "When set to true, it will automatically focus this session if it is found."
-        }
-      }
+    "SaveAsOwner": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "LocalMachine",
+        "CloudUser"
+      ],
+      "enum": [
+        "LocalMachine",
+        "CloudUser"
+      ]
     }
   }
 }

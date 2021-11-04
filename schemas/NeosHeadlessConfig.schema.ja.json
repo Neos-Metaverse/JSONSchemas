@@ -1,9 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Config",
+  "title": "NeosHeadlessConfig",
   "type": "object",
-  "description": "Neos クライアントの高度な設定です.",
+  "description": "Neos Headlessサーバーの設定に使用されるオプションです。Headless起動時にJSONファイルから読み込みます。",
   "additionalProperties": false,
+  "required": [
+    "startWorlds"
+  ],
   "properties": {
     "$schema": {
       "type": [
@@ -12,27 +15,13 @@
       ],
       "description": "JSONSchema for this file, used for external users to validate and test this file."
     },
-    "unsafeModeWhiteList": {
+    "comment": {
       "type": [
-        "array",
-        "null"
+        "null",
+        "string"
       ],
-      "default": [],
-      "description": "OpenUnsafeコマンドライン引数で指定できる、Unsafeモードで開くことができるWorld URLのリストを指定します。",
-      "items": {
-        "type": "string"
-      }
-    },
-    "inputs": {
-      "description": "Neosクライアントのコントローラを指定します。",
-      "oneOf": [
-        {
-          "type": "null"
-        },
-        {
-          "$ref": "#/definitions/InputConfig"
-        }
-      ]
+      "default": null,
+      "description": "このファイルに対する任意のフリーフォームのコメントです。設定を識別するために使用します。"
     },
     "universeId": {
       "type": [
@@ -40,74 +29,110 @@
         "string"
       ],
       "default": null,
-      "description": "Neosクライアントがどの宇宙にあるかを指定します。\nこれを指定すると、クライアントやHeadlessで同値のUniverseIdを指定した場合に限り、このクライアントやHeadlessで起動したセッションを確認できるようになります。\n講習などで使用する場合に活用します\nこの設定はNeosのユーザ機能を活用するアクセスレベル(フレンドやフレンド+)をセッションに指定した場合は機能しません。"
+      "description": "このヘッドレスサーバがどの宇宙にあるかを指定します。\nこれを指定すると、クライアントで同値のUniverseIdを指定した場合に限りこのクライアントで起動したセッションは確認できるようになります。\n講習などで使用する場合に活用します\nこの設定はNeosのユーザ機能を活用するアクセスレベル(フレンドやフレンド+)をセッションに指定した場合は機能しません。"
     },
-    "autoStartWorlds": {
+    "tickRate": {
+      "type": "number",
+      "default": 60,
+      "description": "1秒間に何回、ティック（更新）を行うかを設定します。",
+      "format": "float"
+    },
+    "maxConcurrentAssetTransfers": {
+      "type": "integer",
+      "default": 4,
+      "description": "このヘッドレスサーバーの最大同時アセット転送数を指定します。多くするとアセットの詰まりがなくなりますが、ネットワーク負荷も高まります。",
+      "format": "int32"
+    },
+    "usernameOverride": {
       "type": [
-        "array",
+        "null",
+        "string"
+      ],
+      "default": null,
+      "description": "ワールドブラウザで使用する名前とユーザ名を別名にすることができます。\nこの値を設定するとユーザ名とは別にこちらの名前をワールドブラウザに表示できます。"
+    },
+    "loginCredential": {
+      "type": [
+        "string",
         "null"
       ],
-      "default": [],
-      "description": "Neosクライアント起動した際に自動的に開始するセッション・ワールドを指定します。",
-      "items": {
-        "$ref": "#/definitions/WorldStartupParameters"
-      }
+      "default": null,
+      "description": "Headlessで使用するユーザのユーザ名を指定します。\nコマンドラインでも --user を使用することで変更可能です。"
     },
-    "autoJoinSessions": {
+    "loginPassword": {
       "type": [
-        "array",
+        "string",
         "null"
       ],
-      "default": [],
-      "description": "Neosクライアントを起動した際に自動的に参加するセッションを指定します。",
+      "default": null,
+      "description": "Headlessで使用するユーザのパスワードを指定します。\nコマンドラインでも --password を使用することで変更可能です。\n二段階認証を使用している場合は追加で --token を使用してトークンを指定してください。"
+    },
+    "startWorlds": {
+      "type": "array",
+      "description": "このHeadless Serverの起動時に開始/作成するワールド/セッションのリストです。",
       "items": {
-        "$ref": "#/definitions/SessionJoinParameters"
+        "$ref": "#/definitions/WorldStartInfo"
       }
     },
-    "noUI": {
-      "type": "boolean",
-      "default": false,
-      "description": "trueに設定すると、ほとんどの標準的なUIをユーザーから隠します。"
+    "dataFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのデータを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --data を使用することで変更可能です。"
     },
-    "disableDesktop": {
-      "type": "boolean",
-      "default": false,
-      "description": "trueに設定すると、デスクトップ表示機能を無効にします。デスクトップ入力／デスクトップモードは無効になりません。"
+    "cacheFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのキャッシュを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --cache を使用することで変更可能です。"
     },
-    "pathWhitelist": {
+    "logsFolder": {
+      "type": [
+        "null",
+        "string"
+      ],
+      "description": "NeosがこのHeadless Serverのログを保存するために使用するフォルダをオーバーライドします。\nコマンドラインでも --logs を使用することで変更可能です"
+    },
+    "allowedUrlHosts": {
       "type": [
         "array",
         "null"
       ],
       "default": null,
-      "description": "NeosがFileBrowserでブラウズできるパスのリストです。空の配列を設定すると、FileBrowserを無効にします。",
+      "description": "Neos内のHTTP/WebSocket操作を自動的に許可するホストのリストを指定します。",
+      "x-example": " ...\n \"allowedUrlHosts\":[\n \"google.com\",\n \"localhost:3000\"\n ]",
       "items": {
+        "type": "string"
+      }
+    },
+    "autoSpawnItems": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "ワールドの開始時にスポーンするアイテムURIのリストです。",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metamovieRoles": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "description": "MetaMovieイベントを行った際の引数です、通常は使用しません",
+      "x-deprecated": true,
+      "additionalProperties": {
         "type": "string"
       }
     }
   },
   "definitions": {
-    "InputConfig": {
+    "WorldStartInfo": {
       "type": "object",
-      "description": "Neosクライアントの入力デバイスの設定オプション.",
-      "additionalProperties": false,
-      "properties": {
-        "triggerDeadZone": {
-          "type": "number",
-          "default": 0.0,
-          "description": "クライアントが使用しているすべてのコントローラのトリガーにデッドゾーン(遊び)を指定します",
-          "format": "float"
-        },
-        "axisDeadZone": {
-          "type": "number",
-          "description": "クライアントが使用しているすべてのコントローラのジョイスティックにデッドゾーン(遊び)を指定します",
-          "format": "float"
-        }
-      }
-    },
-    "WorldStartupParameters": {
-      "type": "object",
-      "description": "これらのオプションは、JSON構成ファイルを元として起動時にセッションを起動する設定を適用するために使用します。",
+      "description": "Headless Server startWorldsの設定に追加オプションを提供します。",
       "additionalProperties": false,
       "properties": {
         "sessionName": {
@@ -333,10 +358,36 @@
           "default": null,
           "description": "AutoInviteUsernamesリストに登録されているユーザーに、招待状と一緒に送られる自動メッセージを指定します。"
         },
+        "autoRecover": {
+          "type": "boolean"
+        },
+        "idleRestartInterval": {
+          "type": "number",
+          "default": -1.0,
+          "description": "アクティブユーザがいない場合において定期的に再起動を行う[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
+        "forcedRestartInterval": {
+          "type": "number",
+          "default": -1.0,
+          "description": "定期的に再起動を行う[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
         "saveOnExit": {
           "type": "boolean",
           "default": false,
           "description": "終了時にこの世界を保存します。"
+        },
+        "autosaveInterval": {
+          "type": "number",
+          "default": -1,
+          "description": "自動的に保存される[秒数]を指定します。0未満は無効です",
+          "format": "double"
+        },
+        "autoSleep": {
+          "type": "boolean",
+          "default": true,
+          "description": "アクティブユーザがいないセッションにおいて、完全なアップデートサイクルを定期的に実行することを防ぎます。"
         }
       }
     },
@@ -397,52 +448,17 @@
         }
       }
     },
-    "SessionJoinParameters": {
-      "type": "object",
-      "description": "このクライアントが自動的に参加するセッションの設定。",
-      "additionalProperties": false,
-      "properties": {
-        "url": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "参加するためのセッションのURiです。指定された場合、他のすべての項目は無視されます。",
-          "format": "uri",
-          "x-example": {
-            "url": "neos-session:///S-U-ProbablePrime:CheeseLand"
-          }
-        },
-        "sessionId": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "参加したいセッションIDを指定します。 \"*\" (ワイルドカード)を指定するとこの他のﾊﾟﾗﾒｰﾀから入るセッションを自動検索します。",
-          "x-example": {
-            "sessionId": "S-U-ProbablePrime:CheeseLand"
-          }
-        },
-        "lanOnly": {
-          "type": "boolean",
-          "description": "trueを指定すると、LAN内で開かれたセッションのみに参加します。"
-        },
-        "headlessOnly": {
-          "type": "boolean",
-          "description": "trueを指定すると、Headlessクライアントで開かれたセッションのみに参加します"
-        },
-        "onlyUniverseId": {
-          "type": [
-            "null",
-            "string"
-          ],
-          "description": "任意の値を指定すると、同じUniverseIdが設定されたセッションに参加します"
-        },
-        "autoFocus": {
-          "type": "boolean",
-          "description": "trueを指定すると、セッションに参加する際に自動的にセッションにフォーカス(移動)します。"
-        }
-      }
+    "SaveAsOwner": {
+      "type": "string",
+      "description": "どこに保存するかを指定する際の引数です",
+      "x-enumNames": [
+        "ローカルマシン(ローカルdbに保存されます)",
+        "クラウドユーザ(NeosCloudに保存されます)"
+      ],
+      "enum": [
+        "LocalMachine",
+        "CloudUser"
+      ]
     }
   }
 }
