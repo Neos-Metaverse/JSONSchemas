@@ -292,7 +292,7 @@
           "description": "falseに設定するとこのワールドエントリーが開始されないようになります。"
         },
         "saveAsOwner": {
-          "description": "このワールドが保存されたときに、誰が保存するかを制御します。詳しくは、SaveAsOwnerを参照してください。",
+          "description": "このワールドが保存されたときに、誰が保存するかを制御します。詳しくは、WikiからHeadlessに関する説明を参照してください。",
           "oneOf": [
             {
               "type": "null"
@@ -397,6 +397,18 @@
         }
       }
     },
+    "SaveAsOwner": {
+      "type": "string",
+      "description": "ワールドを保存する際，保存するオーナーを指定します。",
+      "x-enumNames": [
+        "LocalMachine(ローカルのlitedbに保存します。レコードIDはM-から始まる物になり、アセットURiはlocalから始まるものになります)",
+        "CloudUser(Neos Cloudに保存します。Neosにログインしている必要があります。レコードIDはU-から始まるものになり、アセットURiはneosdbから始まるものになります)"
+      ],
+      "enum": [
+        "LocalMachine",
+        "CloudUser"
+      ]
+    },
     "SessionJoinParameters": {
       "type": "object",
       "description": "このクライアントが自動的に参加するセッションの設定。",
@@ -436,7 +448,7 @@
             "null",
             "string"
           ],
-          "description": "任意の値を指定すると、同じUniverseIdが設定されたセッションに参加します"
+          "description": "任意の値を指定すると、同じUniverseIdが設定されたセッションのみ表示されるようになります"
         },
         "autoFocus": {
           "type": "boolean",
