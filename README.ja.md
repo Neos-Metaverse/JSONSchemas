@@ -18,8 +18,8 @@ VS Codeを使ってJSONファイルを編集することをお勧めします、
 
 ## どのようなスキーマがあるのでしょうか？
 
-- NeosHeadlessConfig.schema.json -　[Headlessの設定向けのものです](https://wiki.neos.com/Headless_Client/Configuration_File/ja)。 英語版は[こちら](https://wiki.neos.com/Headless_Client/Configuration_File)
-- NeosConfig.schema.json - [Neosクライアントの設定向けのものです](https://wiki.neos.com/Startup_Config_File/ja)。英語版は[こちら](https://wiki.neos.com/Startup_Config_File)
+- [NeosHeadlessConfig.schema.ja.json](schemas/NeosHeadlessConfig.schema.ja.json) -　[Headlessの設定向けのものです](https://wiki.neos.com/Headless_Client/Configuration_File/ja)。 英語版は[こちら](https://wiki.neos.com/Headless_Client/Configuration_File)
+- [NeosConfig.schema.ja.json](schemas/NeosConfig.schema.ja.json) - [Neosクライアントの設定向けのものです](https://wiki.neos.com/Startup_Config_File/ja)。英語版は[こちら](https://wiki.neos.com/Startup_Config_File)
 
 ## どこで記法など、詳細を知ることができますか？
 
